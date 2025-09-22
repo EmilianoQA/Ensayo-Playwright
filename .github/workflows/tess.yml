@@ -1,0 +1,32 @@
+name: Ejecuatar pruebas con Playwright
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:  
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+            python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+            python -m pip install --upgrade pip
+            pip install pytest playwright pytest-playwright
+            playwright install chromium
+
+      - name: Ejecutar tests
+        run: |
+            pytest -v test_demo.py
